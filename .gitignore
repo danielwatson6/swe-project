@@ -4,6 +4,7 @@ __pycache__/
 
 # nodejs
 node_modules/
+dist/
 
 # virtualenv
 env/
