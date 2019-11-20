@@ -1,0 +1,18 @@
+# python
+*.py[cod]
+__pycache__/
+
+# nodejs
+node_modules/
+
+# virtualenv
+env/
+env.sh
+
+# os
+.DS_Store
+Icon?
+
+# ide
+.vscode
+*.swp
