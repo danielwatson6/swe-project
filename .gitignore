@@ -10,6 +10,9 @@ dist/
 env/
 env.sh
 
+# data
+data/
+
 # os
 .DS_Store
 Icon?
