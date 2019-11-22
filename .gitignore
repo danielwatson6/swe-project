@@ -20,3 +20,6 @@ Icon?
 # ide
 .vscode
 *.swp
+
+#log files
+*.log
