@@ -2,6 +2,8 @@
 
 To set up the backend environment, make sure to have [python 3.8.0](https://www.python.org/downloads/release/python-380/) and `virtualenv` (`pip install virtualenv`) and ping [@danielwatson6](https://github.com/danielwatson6) for an `env.sh` file.
 
+(Optional) for access to the original CSV data, ping [@danielwatson6](https://github.com/danielwatson6). With the data, by calling `python -m scripts.firebase_upload`, the database will be wiped out and freshly recreated.
+
 Within the `src` directory, run the following:
 ```bash
 virtualenv env
@@ -32,6 +34,14 @@ All developers should follow the workflow guidelines outlined here.
 
 Install the [black](https://github.com/psf/black) python autoformatter and keep all the default settings.
 
+Sort imports by built-in libraries, third party libraries, and in-project modules, separating each of the three by an additional newline and sorting each category alphabetically.
+
+### Directory structure
+
+Keep each route in its own file as a submodule of `routes`, making sure to import it on `routes/__init__.py`.
+
+Keep scripts that are never imported by the server as submodules of `scripts`, each in their own executable file.
+
 ### Package management
 
 **Make sure to always work within the virtualenv** (via `source env.sh`). After installing a new python package, update the dependencies in the `requirements.txt` file by running `pip freeze > requirements.txt`.
@@ -41,3 +51,9 @@ Install the [black](https://github.com/psf/black) python autoformatter and keep 
 ### Code style
 
 Install [https://eslint.org/](ESLint) and keep all the defaults. Autoformat code with the `--fix` flag.
+
+Sort imports by third party libraries, components and other in-project imports, separating each of the three by an additional newline and sorting each category alphabetically.
+
+### Directory structure
+
+Each React component should live in its own file but be imported (via `index.js`) by a relative import to its parent directory, whose name is identical. Name both the directory and the file in `CamelCase` (resembling a class). Subcomponents only used by a parent component should live in subdirectories (e.g., `App` is the parent-most component, so all other components are in subdirectories of `App`).
