@@ -15,4 +15,4 @@ if __name__ == "__main__":
         except ValueError:
             print("Usage: python -m server.server [port]?")
             exit()
-    app.run(debug=True, port=PORT, host="0.0.0.0")
+    app.run(debug=True, port=PORT, host="0.0.0.0", ssl_context="adhoc")
