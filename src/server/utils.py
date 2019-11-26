@@ -1,10 +1,10 @@
-from flask import abort, request
+from flask import abort, redirect, request
 
 
 def check_json_request(format_):
     """Handy function to validate and parse incoming JSON requests.
 
-    First this will reject any non-JSON request.
+    First this will handle any non-JSON request to just return the HTML template.
 
     Then, this will check that the keys in `s` are exactly the keys in `format_`, and
     that the values in `s` have the types associated to the keys in `format_`. E.g.,
@@ -22,7 +22,7 @@ def check_json_request(format_):
 
     """
     if not request.is_json:
-        abort(400)
+        redirect("/", code=302)
 
     contents = request.get_json()
     if set(contents.keys()) != set(format_.keys()):

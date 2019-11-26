@@ -20,4 +20,8 @@ def login():
     token, expires_at = users.set_session(username)
 
     response = jsonify()
-    response.set_cookie("login", expires=expires_at, secure=True, httponly=True)
+    response.set_cookie("loggedIn", value="true", expires=expires_at)
+    response.set_cookie(
+        "loginToken", value=token, expires=expires_at, secure=True, httponly=True
+    )
+    return response
