@@ -7,5 +7,5 @@ Team members:
 
 **For all development documentation, see the `README.md` file in the `src` directory.**
 
-**For all project documentation, see the `documentation` directory.**
+**For all project documentation, see the `README.md` file in the `documentation` directory.**
 
