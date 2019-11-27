@@ -4,6 +4,8 @@ To set up the backend environment, make sure to have [python 3.8.0](https://www.
 
 (Optional) for access to the original CSV data, ping [@danielwatson6](https://github.com/danielwatson6). With the data, by calling `python -m scripts.firebase_upload`, the database will be wiped out and freshly recreated.
 
+(Optional) to add a new user, run `python -m scripts.add_user`.
+
 Within the `src` directory, run the following:
 ```bash
 virtualenv env
@@ -44,7 +46,7 @@ Keep scripts that are never imported by the server as submodules of `scripts`, e
 
 ### Package management
 
-**Make sure to always work within the virtualenv** (via `source env.sh`). After installing a new python package, update the dependencies in the `requirements.txt` file by running `pip freeze > requirements.txt`.
+**Make sure to always work within the virtualenv** (i.e., run `source env.sh` in every new shell). After installing a new python package, update the dependencies in the `requirements.txt` file by running `pip freeze > requirements.txt`.
 
 ## Client workflow
 
