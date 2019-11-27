@@ -2,7 +2,7 @@ import csv
 import os
 import re
 
-from utils import db_client
+from db import db
 
 
 def snake_case(s):
@@ -28,7 +28,7 @@ def read_csv(path):
                 yield {k: row[i] for i, k in enumerate(fields) if k}
 
 
-def handle_mentors(db):
+def handle_mentors():
     wipe_collection(db.collection("mentors"))
 
     for row in read_csv(os.path.join("data", "Mentors.csv")):
@@ -41,7 +41,7 @@ def handle_mentors(db):
             print("Warning: row with missing keys:", row)
 
 
-def handle_mentees(db):
+def handle_mentees():
     wipe_collection(db.collection("mentees"))
 
     for row in read_csv(os.path.join("data", "Mentees.csv")):
@@ -52,7 +52,7 @@ def handle_mentees(db):
         db.collection("mentees").add(row)
 
 
-def handle_matches(db):
+def handle_matches():
     wipe_collection(db.collection("matches"))
 
     for row in read_csv(os.path.join("data", "Matches.csv")):
@@ -76,7 +76,6 @@ def handle_matches(db):
 
 
 if __name__ == "__main__":
-    db = db_client()
-    handle_mentors(db)
-    handle_mentees(db)
-    handle_matches(db)
+    handle_mentors()
+    handle_mentees()
+    handle_matches()
