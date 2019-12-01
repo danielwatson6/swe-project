@@ -1,6 +1,7 @@
 import csv
 import os
 import re
+import logging
 
 from db import db
 
@@ -28,54 +29,100 @@ def read_csv(path):
                 yield {k: row[i] for i, k in enumerate(fields) if k}
 
 
-def handle_mentors():
-    wipe_collection(db.collection("mentors"))
+def handle_mentors(overwrite_=True, path_="Mentors.csv"):
+    mentors_ref = db.collection("mentors")
+    if overwrite_:
+        wipe_collection(mentors_ref)
 
-    for row in read_csv(os.path.join("data", "Mentors.csv")):
+    batch = db.batch()
+
+    for row in read_csv(os.path.join("data", path_)):
         try:
             row["mentees"] = []
-            row["email"] = row["email_address"]
-            del row["email_address"]
-            db.collection("mentors").add(row)
-        except KeyError:
-            print("Warning: row with missing keys:", row)
+            id = row["email"]  # use emails as unique id
+            batch.set(mentors_ref.document(id), row)
+        except KeyError as e:
+            print("Warning: row with missing email key: ", e)
+
+    batch.commit()
 
 
-def handle_mentees():
-    wipe_collection(db.collection("mentees"))
+def handle_mentees(overwrite_=True, path_="Mentees.csv"):
+    mentees_ref = db.collection("mentees")
+    if overwrite_:
+        wipe_collection(mentees_ref)
 
-    for row in read_csv(os.path.join("data", "Mentees.csv")):
-        row["mentor"] = ""
-        del row["full_name"]
-        row["email"] = row["nyu_email"]
-        del row["nyu_email"]
-        db.collection("mentees").add(row)
+    batch = db.batch()
 
-
-def handle_matches():
-    wipe_collection(db.collection("matches"))
-
-    for row in read_csv(os.path.join("data", "Matches.csv")):
-        mentor_email = row["mentor_email"]
-        mentee_email = row["mentee_email"]
+    for row in read_csv(os.path.join("data", path_)):
         try:
-            mentor = next(
-                db.collection("mentors").where("email", "==", mentor_email).stream()
-            )
-            mentee = next(
-                db.collection("mentees").where("email", "==", mentee_email).stream()
-            )
-            mentor_mentees = mentor.to_dict()["mentees"]
-            mentor_mentees.append(mentee.id)
-            mentor.reference.update({"mentees": mentor_mentees})
-            mentee.reference.update({"mentor": mentor.id})
-        except StopIteration:
-            print("Warning: someone with one of these two emails doesn't exist:")
-            print(mentor_email)
-            print(mentee_email)
+            row["mentor"] = ""
+            id = row["email"]  # use emails as unique id
+            batch.set(mentees_ref.document(id), row)
+        except KeyError as e:
+            print("Warning: row with missing email key: ", e)
+
+    batch.commit()
+
+
+def handle_board_members(overwrite_=True, path_="Board_Members.csv"):
+    bm_ref = db.collection("board_members")
+    if overwrite_:
+        wipe_collection(bm_ref)
+
+    batch = db.batch()
+
+    for row in read_csv(os.path.join("data", path_)):
+        try:
+            id = row["email"]  # use emails as unique id
+            batch.set(bm_ref.document(id), row)
+        except KeyError as e:
+            print("Warning: row with missing email key: ", e)
+
+    batch.commit()
+
+
+def handle_matches(overwrite_=True, path_="Matches.csv"):
+    mentors_ref = db.collection("mentors")
+    mentees_ref = db.collection("mentees")
+    matches_ref = db.collection("matches")
+
+    if overwrite_:
+        wipe_collection(matches_ref)
+
+    batch = db.batch()
+
+    for row in read_csv(os.path.join("data", path_)):
+        try:
+            mentor_email = row["mentor_email"]
+            mentee_email = row["mentee_email"]
+            try:
+                mentor_ref = mentors_ref.document(mentor_email)
+                mentee_ref = mentees_ref.document(mentee_email)
+                mentor = mentor_ref.get()
+                mentee = mentee_ref.get()
+                if mentor.exists and mentee.exists:
+                    mentor_mentees = mentor.to_dict()["mentees"]
+                    mentor_mentees.append(mentee.id)
+                    id = mentor.id + mentee.id  # use
+                    batch.set(matches_ref.document(id), row)
+                    batch.update(mentor_ref, {"mentees": mentor_mentees})
+                    batch.update(mentee_ref, {"mentor": mentor.id})
+                else:
+                    raise StopIteration
+            except StopIteration:
+                print("Warning: someone with one of these two emails doesn't exist:")
+                print(mentor_email)
+                print(mentee_email)
+        except KeyError as e:
+            print("Warning: row with missing mentor or mentee email key: ", e)
+
+    batch.commit()
 
 
 if __name__ == "__main__":
     handle_mentors()
+    handle_mentors(False, "New_Mentors.csv")
     handle_mentees()
+    handle_board_members()
     handle_matches()
