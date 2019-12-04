@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
 
 import Home from "./Home";
 import Login from "./Login";
 
 
 export default function () {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [username, setUsername] = useState("");
 
     useEffect(function () {
-        if (document.cookie.includes("loggedIn=true")) {
-            setLoggedIn(true);
+        const match = /username=([^;]+);/.exec(document.cookie);
+        if (match) {
+            setUsername(match[1]);
         }
     }, []);
 
-    if (!loggedIn) {
-        return <Login setLoggedIn={setLoggedIn} />;
+    const logout = function () {
+        setUsername("");
+    };
+
+    if (username) {
+        return <Home username={username} logout={logout} />;
     }
-    return (
-        <Router>
-            <Switch>
-                <Route path="/">
-                    <Home />
-                </Route>
-            </Switch>
-        </Router>
-    );
+    return <Login login={setUsername} />;
 };

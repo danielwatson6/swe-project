@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
 
-export default function ({ setLoggedIn }) {
+export default function ({ login }) {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -27,13 +27,15 @@ export default function ({ setLoggedIn }) {
             body: JSON.stringify({ username, password }),
         })
         .then(function (response) {
+            return response.json();
+        })
+        .then(function ({ username }) {
             setWaiting(false);
-            if (response.ok) {
-                setLoggedIn(true);
-            }
-            else {
-                setError("Invalid login. Please try again.")
-            }
+            login(username);
+        })
+        .catch(function () {
+            setWaiting(false);
+            setError("Invalid login. Please try again.")
         });
     };
 
