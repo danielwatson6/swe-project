@@ -54,12 +54,16 @@ class Users(Collection):
     def verify_user(cls, username, password):
         """Check that the provided credentials match those in the database."""
         user = cls.get(username)
+        if user is None:
+            return False
         return bcrypt.checkpw(_bcrypt_safe(password), user["password"])
 
     @classmethod
     def verify_session(cls, username, token):
         """Check that the login token is valid for the given user."""
         user = cls.get(username)
+        if user is None:
+            return False
         if user["session"]["expires_at"] < time.time():
             return False
 
