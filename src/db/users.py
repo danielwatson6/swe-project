@@ -6,7 +6,7 @@ import time
 import bcrypt
 from flask import abort
 
-from db import db
+from db import Collection
 
 
 def _bcrypt_safe(password):
@@ -22,51 +22,47 @@ def _bcrypt_safe(password):
     return base64.b64encode(digest)
 
 
-def get(username):
-    """Get a user by its username."""
-    user = db.collection("users").document(username).get().to_dict()
-    if user is None:
-        abort(404, "User does not exist.")
-    return user
+class Users(Collection):
+    collection = "users"
 
+    @classmethod
+    def add(cls, username, password):
+        """Register a new user."""
+        user = {
+            "password": bcrypt.hashpw(_bcrypt_safe(password), bcrypt.gensalt()),
+            "created_at": time.time(),
+            "session": None,
+        }
+        super().add(username, user)
 
-def add(username, password):
-    """Register a new user."""
-    user = {
-        "password": bcrypt.hashpw(_bcrypt_safe(password), bcrypt.gensalt()),
-        "created_at": time.time(),
-        "session": None,
-    }
-    db.collection("users").document(username).set(user)
+    @classmethod
+    def set_session(cls, username, expires_in=1200.0):
+        """Set a new login session for the user."""
 
+        # The token should come from a cryptographically-safe source of randomness.
+        raw_token = os.urandom(16)
 
-def set_session(username, expires_in=1200.0):
-    """Set a new login session for the user."""
+        # We store a hashed token-- storing plain tokens = storing raw passwords!
+        hashed_token = base64.b64encode(hashlib.sha384(raw_token).digest())
+        expires_at = time.time() + expires_in
+        session = {"token": hashed_token, "expires_at": expires_at}
+        cls.collection().document(username).update({"session": session})
 
-    # The token should come from a cryptographically-safe source of randomness.
-    raw_token = os.urandom(16)
+        return base64.b64encode(raw_token), expires_at
 
-    # We store a hashed token-- storing plain tokens is basically storing raw passwords!
-    hashed_token = base64.b64encode(hashlib.sha384(raw_token).digest())
-    expires_at = time.time() + expires_in
-    session = {"token": hashed_token, "expires_at": expires_at}
-    db.collection("users").document(username).update({"session": session})
+    @classmethod
+    def verify_user(cls, username, password):
+        """Check that the provided credentials match those in the database."""
+        user = cls.get(username)
+        return bcrypt.checkpw(_bcrypt_safe(password), user["password"])
 
-    return base64.b64encode(raw_token), expires_at
+    @classmethod
+    def verify_session(cls, username, token):
+        """Check that the login token is valid for the given user."""
+        user = cls.get(username)
+        if user["session"]["expires_at"] < time.time():
+            return False
 
-
-def verify_user(username, password):
-    """Check that the provided credentials match those in the database."""
-    user = get(username)
-    return bcrypt.checkpw(_bcrypt_safe(password), user["password"])
-
-
-def verify_session(username, token):
-    """Check that the login token is valid for the given user."""
-    user = get(username)
-    if user["session"]["expires_at"] < time.time():
-        return False
-
-    raw_token = base64.b64decode(token)
-    hashed_token = base64.b64encode(hashlib.sha384(raw_token).digest())
-    return user["session"]["token"] == hashed_token
+        raw_token = base64.b64decode(token)
+        hashed_token = base64.b64encode(hashlib.sha384(raw_token).digest())
+        return user["session"]["token"] == hashed_token
