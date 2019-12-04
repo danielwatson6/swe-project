@@ -51,6 +51,11 @@ class Users(Collection):
         return base64.b64encode(raw_token), expires_at
 
     @classmethod
+    def end_session(cls, username):
+        """Destroy the login session for the user."""
+        cls.update(username, {"session": None})
+
+    @classmethod
     def verify_user(cls, username, password):
         """Check that the provided credentials match those in the database."""
         user = cls.get(username)

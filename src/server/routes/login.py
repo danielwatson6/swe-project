@@ -1,27 +1,27 @@
-import os
-
-from flask import abort, jsonify
+from flask import abort, jsonify, request
 
 from db import Users
 from server import app
 from server.utils import check_json_request
 
 
+@check_json_request({"username": str, "password": str})
 @app.route("/login", methods=["POST"])
 def login():
-    credentials = check_json_request({"username": str, "password": str})
+    credentials = request.get_json()
     username = credentials["username"]
     password = credentials["password"]
 
     if not Users.verify_user(username, password):
         abort(401, "Invalid login. Please try again.")
 
-    # TODO: consider whether to implement "remember me".
+    # TODO: implement "remember me".
     token, expires_at = Users.set_session(username)
 
-    response = jsonify()
-    response.set_cookie("loggedIn", value="true", expires=expires_at)
+    # TODO: the client can access the username via the cookie, maybe delete this?
+    response = jsonify({"username": username})
+    response.set_cookie("username", value=username, expires=expires_at)
     response.set_cookie(
-        "loginToken", value=token, expires=expires_at, secure=True, httponly=True
+        "login_token", value=token, expires=expires_at, secure=True, httponly=True
     )
     return response
