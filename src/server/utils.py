@@ -1,7 +1,9 @@
 from flask import abort, redirect, request
 
+from db import Users
 
-def check_json_request(format_):
+
+def _check_json_request(format_):
     """Handy function to validate and parse incoming JSON requests.
 
     First this will handle any non-JSON request to just return the HTML template.
@@ -32,4 +34,38 @@ def check_json_request(format_):
         if type(contents[field]) != type_:
             abort(400)
 
-    return contents
+
+def check_json_request(format_={}):
+    """Create a route decorator that executes `_check_json_request`."""
+
+    def decorator(f):
+        def route(*args, **kwargs):
+            _check_json_request(format_)
+            return f(*args, **kwargs)
+
+        return route
+
+    return decorator
+
+
+def _check_session():
+    """Verify that the user is logged in."""
+    if "username" not in request.cookies:
+        abort(400)
+    if "login_token" not in request.cookies:
+        abort(400)
+
+    username = request.cookies["username"]
+    login_token = request.cookies["login_token"]
+    if not Users.verify_session(username, login_token):
+        abort(403)
+
+
+def check_session(f):
+    """Route decorator that executes `_check_session`."""
+
+    def route(*args, **kwargs):
+        _check_session()
+        return f(*args, **kwargs)
+
+    return route

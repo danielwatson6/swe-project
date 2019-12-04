@@ -1,1 +1,1 @@
-from server.routes import home, login
+from server.routes import home, login, logout
