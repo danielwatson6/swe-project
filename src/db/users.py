@@ -46,7 +46,7 @@ class Users(Collection):
         hashed_token = base64.b64encode(hashlib.sha384(raw_token).digest())
         expires_at = time.time() + expires_in
         session = {"token": hashed_token, "expires_at": expires_at}
-        cls.collection().document(username).update({"session": session})
+        cls.update(username, {"session": session})
 
         return base64.b64encode(raw_token), expires_at
 

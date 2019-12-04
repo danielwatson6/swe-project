@@ -1,6 +1,6 @@
 from getpass import getpass
 
-from db import users
+from db import Users
 
 
 if __name__ == "__main__":
@@ -15,7 +15,7 @@ if __name__ == "__main__":
                 break
             print("Passwords don't match.")
 
-        users.add(username, password)
+        Users.add(username, password)
         print("Succesfully added user!")
 
     except KeyboardInterrupt:
