@@ -2,7 +2,7 @@ import os
 
 from flask import abort, jsonify
 
-from db import users
+from db import Users
 from server import app
 from server.utils import check_json_request
 
@@ -13,11 +13,11 @@ def login():
     username = credentials["username"]
     password = credentials["password"]
 
-    if not users.verify_user(username, password):
+    if not Users.verify_user(username, password):
         abort(401, "Invalid login. Please try again.")
 
     # TODO: consider whether to implement "remember me".
-    token, expires_at = users.set_session(username)
+    token, expires_at = Users.set_session(username)
 
     response = jsonify()
     response.set_cookie("loggedIn", value="true", expires=expires_at)
