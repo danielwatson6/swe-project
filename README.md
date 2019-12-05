@@ -1,4 +1,5 @@
-# CS-UH 2012 Software Engineering Group Project
+# Manage.Mentorship
+## CS-UH 2012 Software Engineering Group Project
 
 Team members:
 - Daniel Watson
