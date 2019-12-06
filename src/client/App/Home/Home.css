@@ -16,4 +16,9 @@
 
 .column table {
     border-top: 1px solid #ddd;
+    border-spacing: 0;
+}
+
+.column tbody tr:hover {
+    background-color: #f6f6f6;
 }
