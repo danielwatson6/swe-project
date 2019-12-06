@@ -1,0 +1,30 @@
+.navbar {
+    border-bottom: 1px solid #ddd;
+    padding: 0 2rem;
+}
+
+.logo {
+    display: inline-block;
+}
+
+.logo > img {
+    display: inline-block;
+    height: 3rem;
+    margin: .5rem 0;
+}
+
+.logo > h1 {
+    display: inline-block;
+    margin: 1rem 2rem;
+    vertical-align: top;
+}
+
+.navbar > span {
+    display: inline-block;
+    float: right;
+    margin: 1.5rem 0;
+}
+
+.navbar > span > button {
+    margin-left: 1rem;
+}

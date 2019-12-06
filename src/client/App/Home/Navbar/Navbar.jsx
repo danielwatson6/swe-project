@@ -20,8 +20,11 @@ export default function ({ username, logout }) {
     };
 
     return (
-        <div>
-            <h1>Mentorship Network</h1>
+        <div className="navbar">
+            <div className="logo">
+                <img src="client/static/nyuad-logo.png" alt=""/>
+                <h1>Mentorship Network</h1>
+            </div>
             <span>
                 {username}
                 <button onClick={handleClick}>Log out</button>

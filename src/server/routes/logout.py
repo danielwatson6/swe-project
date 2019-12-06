@@ -11,7 +11,6 @@ from server.utils import check_json_request, check_session
 @check_json_request()
 @app.route("/logout", methods=["POST"])
 def logout():
-    print(request.cookies)
     username = request.cookies["username"]
     Users.end_session(username)
 
