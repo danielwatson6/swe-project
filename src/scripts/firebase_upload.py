@@ -31,7 +31,7 @@ def handle_mentors(overwrite, path):
     for row in read_csv(os.path.join("data", path)):
         try:
             row["mentees"] = []
-            email = row["email"]
+            email = row["email"].lower()
             del row["email"]
             mentors[email] = row
         except KeyError as e:
@@ -48,7 +48,7 @@ def handle_mentees(overwrite, path):
     for row in read_csv(os.path.join("data", path)):
         try:
             row["mentor"] = ""
-            email = row["email"]
+            email = row["email"].lower()
             del row["email"]
             mentees[email] = row
         except KeyError as e:
@@ -64,7 +64,7 @@ def handle_board_members(overwrite, path):
     board_members = {}
     for row in read_csv(os.path.join("data", path)):
         try:
-            email = row["email"]
+            email = row["email"].lower()
             del row["email"]
             board_members[email] = row
         except KeyError as e:
