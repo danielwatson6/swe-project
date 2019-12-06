@@ -1,6 +1,6 @@
 import time
 
-from flask import abort, jsonify, request
+from flask import jsonify, request
 
 from db import Users
 from server import app
