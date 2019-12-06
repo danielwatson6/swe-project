@@ -8,7 +8,7 @@ export default function () {
     const [username, setUsername] = useState("");
 
     useEffect(function () {
-        const match = /username=([^;]+);/.exec(document.cookie);
+        const match = /username=([^;]+)/.exec(document.cookie);
         if (match) {
             setUsername(match[1]);
         }
