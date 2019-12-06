@@ -33,9 +33,20 @@ class Collection:
         return db.collection(cls.collection)
 
     @classmethod
+    def to_dict(cls, doc):
+        """Override this to hide desired fields from the client."""
+        return doc.to_dict()
+
+    @classmethod
+    def stream(cls):
+        """Yield all the items in the collection."""
+        for doc in cls.get_collection().stream():
+            yield doc.id, cls.to_dict(doc)
+
+    @classmethod
     def get(cls, index):
         """Get an item in the collection via its index."""
-        return cls.get_collection().document(index).get().to_dict()
+        return cls.to_dict(cls.get_collection().document(index).get())
 
     @classmethod
     def add(cls, index, doc):
@@ -65,4 +76,4 @@ class Collection:
     def wipe(cls):
         """Remove all documents in the collection."""
         for doc in cls.get_collection().stream():
-            cls.delete(doc.id)
+            doc.delete()
