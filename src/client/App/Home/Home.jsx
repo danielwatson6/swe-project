@@ -11,10 +11,10 @@ export default function ({ username, logout }) {
             <Navbar username={username} logout={logout} />
             <div className="row">
                 <div className="column">
-                    <Mentors />
+                    <Mentees />
                 </div>
                 <div className="column">
-                    <Mentees />
+                    <Mentors />
                 </div>
             </div>
         </div>
