@@ -31,15 +31,6 @@ const sortByKey = function (objects, key, reversed=false) {
 };
 
 
-const reverse = function (objects) {
-    const result = {};
-    for (let key of Object.keys(objects).reverse()) {
-        result[key] = objects[key];
-    }
-    return result;
-};
-
-
 export default function ({ title, cached, setter, cachedSetter }) {
 
     const [searchQuery, setSearchQuery] = useState("");

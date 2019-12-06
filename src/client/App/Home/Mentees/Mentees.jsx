@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 
+import Mentee from "./Mentee";
 import Toolbar from "../Toolbar";
 
 
 export default function () {
 
+    // Active mentees in the view.
     const [mentees, setMentees] = useState({});
+    // Saved mentees that may appear in and out of the view, e.g. as search changes.
     const [cachedMentees, setCachedMentees] = useState({});
-    const [selectedMentees, setSelectedMentees] = useState([]);
+    // Only keep email keys in this one, use null values.
+    const [selectedMentees, setSelectedMentees] = useState({});
 
     useEffect(function () {
         fetch("/mentees", {
@@ -21,35 +25,70 @@ export default function () {
             setMentees(mentees);
             setCachedMentees(mentees);
         });
-
-        // const dummyData = {
-        //     "dw1949@nyu.edu": {
-        //         name: "Daniel Watson",
-        //         net_id: "dw1949",
-        //         mentor: "nh48@nyu.edu",
-        //         major: "Computer Science",
-        //         graduation_date: "May 2020",
-        //         nationality: "USA",
-        //     },
-        //     "ggl245@nyu.edu": {
-        //         name: "Gabriel Garcia Leyva",
-        //         net_id: "ggl245",
-        //         mentor: "yz2@nyu.edu",
-        //         major: "Computer Science",
-        //         graduation_date: "May 2020",
-        //         nationality: "Cuba",
-        //     },
-        // };
-        // setMentees(dummyData);
-        // setCachedMentees(dummyData);
-
     }, []);
 
+    // If any mentees are removed from the view, make sure to deselect them.
+    useEffect(function () {
+        const newSelectedMentees = {};
+        for (let email in mentees) {
+            if (email in selectedMentees) {
+                newSelectedMentees[email] = null;
+            }
+        }
+        setSelectedMentees(newSelectedMentees);
+    }, [mentees]);
+
+    const handleSelectAll = function (event) {
+        if (event.target.checked) {
+            const newSelectedMentees = {};
+            for (let email in mentees) {
+                newSelectedMentees[email] = 0;
+            }
+            setSelectedMentees(newSelectedMentees);
+        }
+        else {
+            setSelectedMentees({});
+        }
+    };
+
+    const handleSelectOne = function (email) {
+        return function (event) {
+            if (event.target.checked) {
+                const newSelectedMentees = {};
+                for (let email in selectedMentees) {
+                    newSelectedMentees[email] = 0;
+                }
+                newSelectedMentees[email] = 0;
+                setSelectedMentees(newSelectedMentees);
+            }
+            else {
+                const newSelectedMentees = {};
+                for (let email in selectedMentees) {
+                    newSelectedMentees[email] = 0;
+                }
+                delete newSelectedMentees[email];
+                setSelectedMentees(newSelectedMentees);
+            }
+        };
+    };
+
+    const selectedActions = (
+        <div className="selected-actions">
+            {/* TODO: request a CSV download, only for the mentees. */}
+            <button>Download</button>
+            {/* TODO: connect these actions to those in the mentors column. */}
+            <button>Email</button>
+            <button>Delete</button>
+        </div>
+    );
     const table = (
         <table>
             <thead>
                 <tr>
-                    <th>Actions</th>
+                    <th>
+                        Select all
+                        <input type="checkbox" onChange={handleSelectAll} />
+                    </th>
                     <th>Name</th>
                     <th>NetId</th>
                     <th>Email</th>
@@ -61,24 +100,19 @@ export default function () {
             </thead>
             <tbody>
                 {Object.keys(mentees).map(function (email) {
-                    const m = mentees[email];
                     return (
-                        <tr key={email} id={email}>
-                            <td></td>
-                            <td>{m.name}</td>
-                            <td>{m.net_id}</td>
-                            <td>{email}</td>
-                            <td>{m.mentor}</td>
-                            <td>{m.major}</td>
-                            <td>{m.graduation_date}</td>
-                            <td>{m.nationality}</td>
-                        </tr>
+                        <Mentee
+                            key={email}
+                            email={email}
+                            mentee={mentees[email]}
+                            selected={email in selectedMentees}
+                            handleSelect={handleSelectOne(email)}
+                        />
                     );
                 })}
             </tbody>
         </table>
     );
-
     return (
         <div className="mentees">
             <Toolbar
@@ -87,6 +121,7 @@ export default function () {
                 setter={setMentees}
                 cachedSetter={setCachedMentees}
             />
+            {Object.keys(selectedMentees).length > 0 ? selectedActions : ""}
             {Object.keys(cachedMentees).length > 0 ? table : "Loading..."}
         </div>
     );
