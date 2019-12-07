@@ -6,3 +6,4 @@ from db.mentees import Mentees
 from db.mentors import Mentors
 from db.matches import Matches
 from db.users import Users
+from db.board_members import BoardMembers

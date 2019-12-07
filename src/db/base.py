@@ -75,5 +75,7 @@ class Collection:
     @classmethod
     def wipe(cls):
         """Remove all documents in the collection."""
+        batch = db.batch()
         for doc in cls.get_collection().stream():
-            doc.delete()
+            batch.delete(doc.reference)
+        batch.commit()

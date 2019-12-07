@@ -105,13 +105,13 @@ def str2bool(s):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add("--wipe_mentors", type=str2bool, nargs="?", default=True)
-    parser.add("--wipe_mentees", type=str2bool, nargs="?", default=True)
-    parser.add("--wipe_board_members", type=str2bool, nargs="?", default=True)
-    parser.add("--mentors_csv", type=str, default="Mentors.csv")
-    parser.add("--mentees_csv", type=str, default="Mentees.csv")
-    parser.add("--matches_csv", type=str, default="Matches.csv")
-    parser.add(
+    parser.add_argument("--wipe_mentors", type=str2bool, nargs="?", default=True)
+    parser.add_argument("--wipe_mentees", type=str2bool, nargs="?", default=True)
+    parser.add_argument("--wipe_board_members", type=str2bool, nargs="?", default=True)
+    parser.add_argument("--mentors_csv", type=str, default="Mentors.csv")
+    parser.add_argument("--mentees_csv", type=str, default="Mentees.csv")
+    parser.add_argument("--matches_csv", type=str, default="Matches.csv")
+    parser.add_argument(
         "--board_members_csv", type=str, default="BoardMembers.csv",
     )
     FLAGS = parser.parse_args()
