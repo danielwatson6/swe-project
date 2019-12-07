@@ -4,14 +4,12 @@ import Mentor from "./Mentor";
 import Toolbar from "../Toolbar";
 
 
-export default function () {
+export default function (props) {
 
     // Active mentors in the view.
     const [mentors, setMentors] = useState({});
     // Saved mentors that may appear in and out of the view, e.g. as search changes.
     const [cachedMentors, setCachedMentors] = useState({});
-    // Only keep email keys in this one, use null values.
-    const [selectedMentors, setSelectedMentors] = useState({});
 
     useEffect(function () {
         fetch("/mentors", {
@@ -39,11 +37,11 @@ export default function () {
     useEffect(function () {
         const newSelectedMentors = {};
         for (let email in mentors) {
-            if (email in selectedMentors) {
+            if (email in props.selectedMentors) {
                 newSelectedMentors[email] = null;
             }
         }
-        setSelectedMentors(newSelectedMentors);
+        props.setSelectedMentors(newSelectedMentors);
     }, [mentors]);
 
     const handleSelectAll = function (event) {
@@ -52,10 +50,10 @@ export default function () {
             for (let email in mentors) {
                 newSelectedMentors[email] = 0;
             }
-            setSelectedMentors(newSelectedMentors);
+            props.setSelectedMentors(newSelectedMentors);
         }
         else {
-            setSelectedMentors({});
+            props.setSelectedMentors({});
         }
     };
 
@@ -63,30 +61,28 @@ export default function () {
         return function (event) {
             if (event.target.checked) {
                 const newSelectedMentors = {};
-                for (let email in selectedMentors) {
+                for (let email in props.selectedMentors) {
                     newSelectedMentors[email] = 0;
                 }
                 newSelectedMentors[email] = 0;
-                setSelectedMentors(newSelectedMentors);
+                props.setSelectedMentors(newSelectedMentors);
             }
             else {
                 const newSelectedMentors = {};
-                for (let email in selectedMentors) {
+                for (let email in props.selectedMentors) {
                     newSelectedMentors[email] = 0;
                 }
                 delete newSelectedMentors[email];
-                setSelectedMentors(newSelectedMentors);
+                props.setSelectedMentors(newSelectedMentors);
             }
         };
     };
 
     const selectedActions = (
         <div className="selected-actions">
-            {/* TODO: request a CSV download, only for the mentors. */}
-            <button>Download</button>
-            {/* TODO: connect these actions to those in the mentors column. */}
-            <button>Email</button>
-            <button>Delete</button>
+            <button onClick={props.handleDownload}>Download</button>
+            <button onClick={props.handleEmail}>Email</button>
+            <button onClick={props.handleDelete}>Delete</button>
         </div>
     );
     const table = (
@@ -113,7 +109,7 @@ export default function () {
                             key={email}
                             email={email}
                             mentor={mentors[email]}
-                            selected={email in selectedMentors}
+                            selected={email in props.selectedMentors}
                             handleSelect={handleSelectOne(email)}
                         />
                     );
@@ -129,7 +125,7 @@ export default function () {
                 setter={setMentors}
                 cachedSetter={setCachedMentors}
             />
-            {Object.keys(selectedMentors).length > 0 ? selectedActions : ""}
+            {Object.keys(props.selectedMentors).length > 0 ? selectedActions : ""}
             {Object.keys(cachedMentors).length > 0 ? table : "Loading..."}
         </div>
     );
