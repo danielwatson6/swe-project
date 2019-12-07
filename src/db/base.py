@@ -73,6 +73,15 @@ class Collection:
         cls.get_collection().document(index).delete()
 
     @classmethod
+    def delete_batch(cls, indices):
+        """Delete the specified documents from the collection."""
+        batch = db.batch()
+        for index in indices:
+            doc_ref = cls.get_collection().document(index)
+            batch.delete(doc_ref)
+        batch.commit()
+
+    @classmethod
     def wipe(cls):
         """Remove all documents in the collection."""
         for doc in cls.get_collection().stream():
