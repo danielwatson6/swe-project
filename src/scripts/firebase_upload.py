@@ -70,7 +70,7 @@ def handle_board_members(overwrite, path):
         except KeyError as e:
             print("Warning: row with missing email key: ", e)
 
-    BoardMembers.add_batch()
+    BoardMembers.add_batch(board_members)
 
 
 def handle_matches(path_="Matches.csv"):
