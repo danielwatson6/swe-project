@@ -1,1 +1,1 @@
-from server.routes import home, login, logout, mentees, mentors
+from server.routes import delete_people, home, login, logout, mentees, mentors
