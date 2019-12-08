@@ -6,7 +6,8 @@ export default function ({ email, mentee, selected, handleSelect }) {
             <td>
                 <input type="checkbox" onChange={handleSelect} checked={selected} />
             </td>
-            <td>{mentee.name}</td>
+            <td>{mentee.first_name}</td>
+            <td>{mentee.last_name}</td>
             <td>{mentee.net_id}</td>
             <td>{email}</td>
             <td><a href={`#${mentee.mentor}`}>{mentee.mentor}</a></td>
