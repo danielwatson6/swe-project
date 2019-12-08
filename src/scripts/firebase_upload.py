@@ -1,9 +1,12 @@
 import argparse
 import csv
 import os
+import logging
 import re
 
 from db import BoardMembers, Matches, Mentees, Mentors
+
+logger = logging.getLogger(__name__)
 
 
 def snake_case(s):
@@ -20,7 +23,7 @@ def read_csv(path):
             if i == 0:
                 fields = list(map(snake_case, row))
             else:
-                yield {k: row[i] for i, k in enumerate(fields) if k}
+                yield {k: row[i].strip() for i, k in enumerate(fields) if k}
 
 
 def handle_mentors(overwrite, path):
@@ -35,7 +38,7 @@ def handle_mentors(overwrite, path):
             del row["email"]
             mentors[email] = row
         except KeyError as e:
-            print("Warning: row with missing email key: ", e)
+            logger.warning("Warning: row with missing email key: {}", e)
 
     Mentors.add_batch(mentors)
 
@@ -51,9 +54,10 @@ def handle_mentees(overwrite, path):
             email = row["email"].lower()
             del row["email"]
             mentees[email] = row
+            if email == "ma4402@nyu.edu":
+                logger.debug("ADDED %s", "ma4402@nyu.edu")
         except KeyError as e:
-            print("Warning: row with missing email key: ", e)
-
+            logger.warning("Warning: row with missing email key: {}", e)
     Mentees.add_batch(mentees)
 
 
@@ -77,8 +81,8 @@ def handle_matches(path_="Matches.csv"):
 
     for row in read_csv(os.path.join("data", path_)):
         try:
-            mentor_email = row["mentor_email"]
-            mentee_email = row["mentee_email"]
+            mentor_email = row["mentor_email"].lower()
+            mentee_email = row["mentee_email"].lower()
         except KeyError as e:
             print("Warning: row with missing mentor or mentee email key: ", e)
         try:
