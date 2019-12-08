@@ -10,7 +10,7 @@ export default function ({ email, mentor, selected, handleSelect }) {
             <td>{mentor.last_name}</td>
             <td>{mentor.industry}</td>
             <td>{email}</td>
-            <td><a href={`#${mentor.mentees.toString()}`}>{mentor.mentees.toString()}</a></td>
+            <td><a href={`#${mentor.mentee}`}>{mentor.mentee}</a></td>
             <td>{mentor.job_title}</td>
             <td>{mentor.program_status}</td>
             <td>{mentor.nationality}</td>
