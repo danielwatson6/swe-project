@@ -15,17 +15,14 @@ export default function (props) {
         fetch("/mentors", {
             headers: {"Content-Type": "application/json"},
             credentials: "include",
-        }) // catch 404 or 500 error
-        .then(response => {
-              if(response.ok) {
-                return response;
-              } else {
-                throw Error(`Request rejected with status ${response.status}`);
-              }
-            })
-        .catch(console.error)
+        })
         .then(function (response) {
-            return response.json();
+            if (response.ok) {
+                return response;
+            }
+            else {
+                throw Error(`Request rejected with status ${response.status}`);
+            }
         })
         .then(function (mentors) {
             setMentors(mentors);
