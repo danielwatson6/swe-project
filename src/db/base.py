@@ -1,9 +1,12 @@
 import base64
 import json
 import os
+import logging
 
 import firebase_admin
 from firebase_admin import credentials, firestore
+
+logger = logging.getLogger(__name__)
 
 
 def _db_client():
@@ -84,5 +87,7 @@ class Collection:
     @classmethod
     def wipe(cls):
         """Remove all documents in the collection."""
+        batch = db.batch()
         for doc in cls.get_collection().stream():
-            doc.delete()
+            batch.delete(doc.reference)
+        batch.commit()
