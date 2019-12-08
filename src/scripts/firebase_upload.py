@@ -50,6 +50,7 @@ def handle_mentees(overwrite, path):
     mentees = {}
     for row in read_csv(os.path.join("data", path)):
         try:
+            row["net_id"] = row["net_id"].lower()
             row["mentor"] = ""
             email = row["email"].lower()
             del row["email"]
