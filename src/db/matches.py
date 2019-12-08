@@ -1,9 +1,13 @@
 from db import Collection, Mentors, Mentees
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Matches(Collection):
     @classmethod
     def add(cls, mentor_email, mentee_email):
+        logger.debug(mentor_email, mentee_email)
         mentor = Mentors.get(mentor_email)
         mentee = Mentors.get(mentee_email)
         if mentor is None or mentee is None:
