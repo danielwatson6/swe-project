@@ -62,6 +62,7 @@ def _check_session():
     username = request.cookies["username"]
     login_token = request.cookies["login_token"]
     if not Users.verify_session(username, login_token):
+        logger.error("Unverified User {}".format(username))
         abort(403)
 
 
