@@ -77,13 +77,6 @@ export default function (props) {
         };
     };
 
-    const selectedActions = (
-        <div className="selected-actions">
-            <button onClick={props.handleDownload}>Download</button>
-            <button onClick={props.handleEmail}>Email</button>
-            <button onClick={props.handleDelete}>Delete</button>
-        </div>
-    );
     const table = (
         <table>
             <thead>
@@ -92,7 +85,8 @@ export default function (props) {
                         Select all
                         <input type="checkbox" onChange={handleSelectAll} />
                     </th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>NetId</th>
                     <th>Email</th>
                     <th>Mentor</th>
@@ -124,7 +118,6 @@ export default function (props) {
                 setter={setMentees}
                 cachedSetter={props.setCachedMentees}
             />
-            {Object.keys(props.selectedMentees).length > 0 ? selectedActions : ""}
             {Object.keys(props.cachedMentees).length > 0 ? table : "Loading..."}
         </div>
     );
