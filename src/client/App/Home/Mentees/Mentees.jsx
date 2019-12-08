@@ -16,16 +16,13 @@ export default function (props) {
             headers: {"Content-Type": "application/json"},
             credentials: "include",
         })
-        .then(response => {
-              if(response.ok) {
-                return response;
-              } else {
-                throw Error(`Request rejected with status ${response.status}`);
-              }
-            })
-        .catch(console.error)
         .then(function (response) {
-            return response.json();
+            if (response.ok) {
+                return response.json();
+            }
+            else {
+                throw Error(`Request rejected with status ${response.status}`);
+            }
         })
         .then(function (mentees) {
             setMentees(mentees);
