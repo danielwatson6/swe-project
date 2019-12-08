@@ -9,9 +9,12 @@ from db.users import Users
 from db.board_members import BoardMembers
 
 # logging
-import os
 import logging
 
-log_filename = "./logs/output.log"
-os.makedirs(os.path.dirname(log_filename), exist_ok=True)
-logging.basicConfig(filename=log_filename, level=logging.DEBUG)
+LOG_FILENAME = "logs/scripts.log"
+logging.basicConfig(
+    format="%(asctime)s - %(name)s%.(lineno)s - %(levelname)s - %(message)s",
+    filename=LOG_FILENAME,
+    filemode="w",
+    level=logging.DEBUG,
+)
