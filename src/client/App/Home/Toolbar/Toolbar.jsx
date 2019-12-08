@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from "react";
 
-
 const fuzzySearch = function (objects, query, key="") {
-    // TODO: implement this.
-    return objects;
+     // If the search bar isn't empty
+
+  let newObjects = objects
+  if (query !== "") {
+      if (key == "") {
+            newObjects = Object.values(objects).filter((item) => {
+                console.log(Object.values(item))
+                return Object.values(item).map(function (e) {return e.toLowerCase()}).findIndex(element => element.includes(query.toLowerCase())) != -1;
+            });
+     }
+     else
+     {
+          newObjects = Object.values(objects).filter((item) => {
+                return item[key].toLowerCase().includes(query.toLowerCase());
+          });
+        }
+    }
+    return newObjects;
 };
 
 

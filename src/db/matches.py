@@ -14,7 +14,7 @@ class Matches(Collection):
             logger.error(
                 "Mentor or mentee not found - %s, %s", mentor_email, mentee_email
             )
-        mentor_mentees = mentor["mentees"]
-        mentor_mentees.append(mentee_email)
-        Mentors.update(mentor_email, {"mentees": mentor_mentees})
+        # mentor_mentees = mentor["mentees"]
+        # mentor_mentees.append(mentee_email)
+        Mentors.update(mentor_email, {"mentee": mentee_email})
         Mentees.update(mentee_email, {"mentor": mentor_email})

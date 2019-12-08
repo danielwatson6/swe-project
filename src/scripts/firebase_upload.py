@@ -33,7 +33,7 @@ def handle_mentors(overwrite, path):
     mentors = {}
     for row in read_csv(os.path.join("data", path)):
         try:
-            row["mentees"] = []
+            row["mentee"] = ""
             email = row["email"].lower()
             del row["email"]
             mentors[email] = row
