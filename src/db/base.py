@@ -49,6 +49,7 @@ class Collection:
     @classmethod
     def get(cls, index):
         """Get an item in the collection via its index."""
+        logger.debug(cls.get_collection().document(index).get())
         return cls.to_dict(cls.get_collection().document(index).get())
 
     @classmethod
