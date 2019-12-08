@@ -53,9 +53,8 @@ def handle_mentees(overwrite, path):
             row["mentor"] = ""
             email = row["email"].lower()
             del row["email"]
+            row["net_id"] = row["net_id"].lower()
             mentees[email] = row
-            if email == "ma4402@nyu.edu":
-                logger.debug("ADDED %s", "ma4402@nyu.edu")
         except KeyError as e:
             logger.warning("Warning: row with missing email key: {}", e)
     Mentees.add_batch(mentees)
@@ -70,6 +69,7 @@ def handle_board_members(overwrite, path):
         try:
             email = row["email"].lower()
             del row["email"]
+            row["net_id"] = row["net_id"].lower()
             board_members[email] = row
         except KeyError as e:
             print("Warning: row with missing email key: ", e)
