@@ -2,6 +2,10 @@ from flask import abort, redirect, request
 
 from db import Users
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def _check_json_request(format_):
     """Handy function to validate and parse incoming JSON requests.
