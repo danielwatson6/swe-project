@@ -8,8 +8,6 @@ export default function (props) {
 
     // Active mentors in the view.
     const [mentors, setMentors] = useState({});
-    // Saved mentors that may appear in and out of the view, e.g. as search changes.
-    const [cachedMentors, setCachedMentors] = useState({});
 
     useEffect(function () {
         fetch("/mentors", {
@@ -18,17 +16,21 @@ export default function (props) {
         })
         .then(function (response) {
             if (response.ok) {
-                return response;
+                return response.json();
             }
             else {
                 throw Error(`Request rejected with status ${response.status}`);
             }
         })
         .then(function (mentors) {
-            setMentors(mentors);
-            setCachedMentors(mentors);
+            props.setCachedMentors(mentors);
         });
     }, []);
+
+    // Update the rendered mentors if the cached ones change.
+    useEffect(function () {
+        setMentors(props.cachedMentors);
+    }, [props.cachedMentors]);
 
     // If any mentors are removed from the view, make sure to deselect them.
     useEffect(function () {
@@ -118,12 +120,12 @@ export default function (props) {
         <div className="mentors">
             <Toolbar
                 title="Mentors"
-                cached={cachedMentors}
+                cached={props.cachedMentors}
                 setter={setMentors}
-                cachedSetter={setCachedMentors}
+                cachedSetter={props.setCachedMentors}
             />
             {Object.keys(props.selectedMentors).length > 0 ? selectedActions : ""}
-            {Object.keys(cachedMentors).length > 0 ? table : "Loading..."}
+            {Object.keys(props.cachedMentors).length > 0 ? table : "Loading..."}
         </div>
     );
 };

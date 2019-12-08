@@ -8,8 +8,6 @@ export default function (props) {
 
     // Active mentees in the view.
     const [mentees, setMentees] = useState({});
-    // Saved mentees that may appear in and out of the view, e.g. as search changes.
-    const [cachedMentees, setCachedMentees] = useState({});
 
     useEffect(function () {
         fetch("/mentees", {
@@ -25,10 +23,14 @@ export default function (props) {
             }
         })
         .then(function (mentees) {
-            setMentees(mentees);
-            setCachedMentees(mentees);
+            props.setCachedMentees(mentees);
         });
     }, []);
+
+    // Update the rendered mentors if the cached ones change.
+    useEffect(function () {
+        setMentees(props.cachedMentees);
+    }, [props.cachedMentees]);
 
     // If any mentees are removed from the view, make sure to deselect them.
     useEffect(function () {
@@ -118,12 +120,12 @@ export default function (props) {
         <div className="mentees">
             <Toolbar
                 title="Mentees"
-                cached={cachedMentees}
+                cached={props.cachedMentees}
                 setter={setMentees}
-                cachedSetter={setCachedMentees}
+                cachedSetter={props.setCachedMentees}
             />
             {Object.keys(props.selectedMentees).length > 0 ? selectedActions : ""}
-            {Object.keys(cachedMentees).length > 0 ? table : "Loading..."}
+            {Object.keys(props.cachedMentees).length > 0 ? table : "Loading..."}
         </div>
     );
 };
