@@ -88,7 +88,6 @@ export default function (props) {
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Industry</th>
-                    // <td>Company\/Organization</td>
                     <th>Email</th>
                     <th>Mentee</th>
                     <th>Job Title</th>
