@@ -1,8 +1,10 @@
-from flask import abort, redirect, request
+from functools import wraps
+
+from flask import abort, render_template, request
 
 from db import Users
-
 import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +30,7 @@ def _check_json_request(format_):
 
     """
     if not request.is_json and request.method == "GET":
-        return redirect("/", code=302)
+        return render_template("index.html")
 
     contents = request.get_json()
     if set(contents.keys()) != set(format_.keys()):
@@ -43,8 +45,11 @@ def check_json_request(format_={}):
     """Create a route decorator that executes `_check_json_request`."""
 
     def decorator(f):
+        @wraps(f)
         def route(*args, **kwargs):
-            _check_json_request(format_)
+            res = _check_json_request(format_)
+            if res is not None:
+                return res
             return f(*args, **kwargs)
 
         return route
@@ -69,6 +74,7 @@ def _check_session():
 def check_session(f):
     """Route decorator that executes `_check_session`."""
 
+    @wraps(f)
     def route(*args, **kwargs):
         _check_session()
         return f(*args, **kwargs)

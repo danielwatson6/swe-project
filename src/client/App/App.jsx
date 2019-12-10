@@ -26,7 +26,7 @@ export default function () {
     return (
         <Router>
             <Switch>
-                <Route path={"/"}>
+                <Route path={"/"} exact>
                     <Home />
                 </Route>
                 <Route path={"/login"}>
