@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+import Dashboard from "./Dashboard";
 import Home from "./Home";
 import Login from "./Login";
 
@@ -19,7 +21,18 @@ export default function () {
     };
 
     if (username) {
-        return <Home username={username} logout={logout} />;
+        return <Dashboard username={username} logout={logout} />;
     }
-    return <Login login={setUsername} />;
+    return (
+        <Router>
+            <Switch>
+                <Route path={"/"}>
+                    <Home />
+                </Route>
+                <Route path={"/login"}>
+                    <Login login={setUsername} />
+                </Route>
+            </Switch>
+        </Router>
+    );
 };
