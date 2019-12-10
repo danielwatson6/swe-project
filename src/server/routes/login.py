@@ -5,8 +5,8 @@ from server import app
 from server.utils import check_json_request
 
 
+@app.route("/login", methods=["GET", "POST"])
 @check_json_request({"username": str, "password": str, "rememberMe": bool})
-@app.route("/login", methods=["POST"])
 def login():
     credentials = request.get_json()
     username = credentials["username"]

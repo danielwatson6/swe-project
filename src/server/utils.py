@@ -15,20 +15,20 @@ def _check_json_request(format_):
     Then, this will check that the keys in `s` are exactly the keys in `format_`, and
     that the values in `s` have the types associated to the keys in `format_`. E.g.,
 
-    >>> check({"foo": 1, "bar", "baz"}, {"foo": int, "bar": str})
+    >>> _check_json_request({"foo": 1, "bar", "baz"}, {"foo": int, "bar": str})
     True
 
-    >>> check({"foo": 1}, {"foo": int, "bar": str})
+    >>> _check_json_request({"foo": 1}, {"foo": int, "bar": str})
     False
 
-    >>> check({"foo": 1, "bar", "baz"}, {"foo": int})
+    >>> _check_json_request({"foo": 1, "bar", "baz"}, {"foo": int})
     False
 
     If all checks pass, the request's parsed JSON contents will be returned.
 
     """
-    if not request.is_json:
-        redirect("/", code=302)
+    if not request.is_json and request.method == "GET":
+        return redirect("/", code=302)
 
     contents = request.get_json()
     if set(contents.keys()) != set(format_.keys()):
@@ -62,7 +62,7 @@ def _check_session():
     username = request.cookies["username"]
     login_token = request.cookies["login_token"]
     if not Users.verify_session(username, login_token):
-        logger.error("Unverified User {}".format(username))
+        logger.error(f"Unverified User {username}")
         abort(403)
 
 
