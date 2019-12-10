@@ -24,9 +24,9 @@ FIELDS = [
 ]
 
 
+@app.route("/mentors/download", methods=["POST"])
 @check_session
 @check_json_request({"emails": list})
-@app.route("/mentors/download", methods=["POST"])
 def download_mentors():
     emails = request.get_json()["emails"]
 

@@ -7,9 +7,9 @@ from server import app
 from server.utils import check_json_request, check_session
 
 
+@app.route("/logout", methods=["POST"])
 @check_session
 @check_json_request()
-@app.route("/logout", methods=["POST"])
 def logout():
     username = request.cookies["username"]
     Users.end_session(username)

@@ -16,9 +16,9 @@ FIELDS = [
 ]
 
 
+@app.route("/mentees/download", methods=["POST"])
 @check_session
 @check_json_request({"emails": list})
-@app.route("/mentees/download", methods=["POST"])
 def download_mentees():
     emails = request.get_json()["emails"]
 
