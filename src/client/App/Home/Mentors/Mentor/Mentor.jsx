@@ -8,6 +8,7 @@ export default function ({ email, mentor, selected, handleSelect }) {
             </td>
             <td>{mentor.first_name}</td>
             <td>{mentor.last_name}</td>
+            <td>{mentor["company/organization"]}</td>
             <td>{mentor.industry}</td>
             <td>{email}</td>
             <td><a href={`#${mentor.mentee}`}>{mentor.mentee}</a></td>

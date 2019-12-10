@@ -87,6 +87,7 @@ export default function (props) {
                     </th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Company/Organization</th>
                     <th>Industry</th>
                     <th>Email</th>
                     <th>Mentee</th>
