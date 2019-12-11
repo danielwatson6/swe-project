@@ -1,0 +1,13 @@
+.match-requests h2 {
+    padding: 0 2rem;
+    cursor: pointer;
+}
+
+.match-requests-content {
+    background-color: #f6f6f6;
+}
+
+.match-request {
+    padding: 0 2rem;
+    border-bottom: 1px solid #ddd;
+};
