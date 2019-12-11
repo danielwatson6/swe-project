@@ -1,5 +1,7 @@
 .mentor-card {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 4px solid #57068C;
+    border-right: 4px solid #57068C;
+    border-left: 4px solid #57068C;
 }
 
 .mentor-info {
@@ -10,7 +12,7 @@
 
 .mentor-info h2 {
     margin: 0;
-    padding-bottom: .5rem;
+    padding-bottom: 1rem;
 }
 
 .mentor-info ul {
