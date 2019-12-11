@@ -1,5 +1,5 @@
 .navbar {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 4px solid #57068C;
     padding: 0 2rem;
 }
 
@@ -35,3 +35,7 @@
 .navbar > span > button {
     margin-left: 1rem;
 }
+
+h1 { color: #111; font-family: 'Helvetica Neue', sans-serif; font-weight: bold; letter-spacing: -1px; line-height: 1; }
+
+h2 { color: #111; font-family: 'Open Sans', sans-serif; font-weight: 300; line-height: 32px; margin: 0 0 72px;}

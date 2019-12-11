@@ -21,7 +21,7 @@ export default function ({ username, logout }) {
     return (
         <div className="navbar">
             <div className="logo">
-                <img src="client/static/nyuad-logo.png" alt=""/>
+                <img src="client/static/logo.png" alt=""/>
                 <h1>Manage.Mentorship</h1>
                 <h2>a modern web-app for a busy board</h2>
             </div>
