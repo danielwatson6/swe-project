@@ -1,3 +1,5 @@
+import logging
+
 from db.base import Collection, db
 
 # Add all submodules of `db` here.
@@ -5,11 +7,10 @@ from db.base import Collection, db
 from db.mentees import Mentees
 from db.mentors import Mentors
 from db.matches import Matches
+from db.match_requests import MatchRequests
 from db.users import Users
 from db.board_members import BoardMembers
 
-# logging
-import logging
 
 LOG_FILENAME = "logs/db.log"
 logging.basicConfig(

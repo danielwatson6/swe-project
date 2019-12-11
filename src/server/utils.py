@@ -32,7 +32,13 @@ def _check_json_request(format_):
     if not request.is_json and request.method == "GET":
         return render_template("index.html")
 
-    contents = request.get_json()
+    try:
+        contents = request.get_json()
+    except Exception as e:
+        if not len(format_.keys()):
+            return
+        raise
+
     if set(contents.keys()) != set(format_.keys()):
         abort(400)
 
@@ -57,8 +63,20 @@ def check_json_request(format_={}):
     return decorator
 
 
+def check_session_soft():
+    """Determine whether the user is logged in."""
+    if "username" not in request.cookies:
+        return False
+    if "login_token" not in request.cookies:
+        return False
+
+    username = request.cookies["username"]
+    login_token = request.cookies["login_token"]
+    return Users.verify_session(username, login_token)
+
+
 def _check_session():
-    """Verify that the user is logged in."""
+    """Verify that the user is logged in to allow a request."""
     if "username" not in request.cookies:
         abort(400)
     if "login_token" not in request.cookies:
@@ -67,7 +85,7 @@ def _check_session():
     username = request.cookies["username"]
     login_token = request.cookies["login_token"]
     if not Users.verify_session(username, login_token):
-        logger.error(f"Unverified User {username}")
+        logger.warning(f"User likely attempted to forge login token: {username}")
         abort(403)
 
 
