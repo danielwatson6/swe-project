@@ -19,6 +19,13 @@
     vertical-align: top;
 }
 
+.logo > h2 {
+    display: inline-block;
+    margin: 1rem 1rem;
+    vertical-align: bottom;
+    color: grey;
+}
+
 .navbar > span {
     display: inline-block;
     float: right;
