@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Bulkbar from "./Bulkbar";
+import MatchRequests from "./MatchRequests";
 import Mentees from "./Mentees";
 import Mentors from "./Mentors";
 import Navbar from "../Navbar";
@@ -117,6 +118,7 @@ export default function ({ username, logout }) {
     return (
         <div>
             <Navbar username={username} logout={logout} />
+            <MatchRequests />
             <Bulkbar
                 hidden={hideBulkbar}
                 emailSelected={emailSelected}
