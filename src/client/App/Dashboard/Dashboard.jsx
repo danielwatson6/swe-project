@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Bulkbar from "./Bulkbar";
 import Mentees from "./Mentees";
 import Mentors from "./Mentors";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 
 
 export default function ({ username, logout }) {

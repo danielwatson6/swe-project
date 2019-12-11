@@ -1,0 +1,30 @@
+.mentor-card {
+    border-bottom: 1px solid #ddd;
+}
+
+.mentor-info {
+    width: 100%;
+    cursor: pointer;
+    padding: 1rem 2rem;
+}
+
+.mentor-info h2 {
+    margin: 0;
+    padding-bottom: .5rem;
+}
+
+.mentor-info ul {
+    margin-bottom: 0;
+}
+
+.mentor-card-form {
+    background-color: #f8f8f8;
+    width: 100%;
+    display: inline-block;
+    padding: 0 2rem;
+}
+
+.mentor-card-form textarea {
+    width: 30rem;
+    resize: vertical;
+}

@@ -6,6 +6,8 @@ from server.routes import (
     home,
     login,
     logout,
+    match_requests,
     mentees,
     mentors,
+    new_match_request,
 )
