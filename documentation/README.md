@@ -7,8 +7,5 @@ The project documentation is split across the 5 phases of the process model:
 - construction
 - deployment
 
-## Project Requirements Checklist with Locations 
-- Step 1
-- Step 2
-- Step 3
-- Step 4
+## Project Table
+Please check the project table for a list of requirements, completion status, and directory location of specified files. 
