@@ -69,6 +69,8 @@ class Users(Collection):
         user = cls.get(username)
         if user is None:
             return False
+        if user["session"] is None:
+            return False
         if user["session"]["expires_at"] < time.time():
             return False
 
