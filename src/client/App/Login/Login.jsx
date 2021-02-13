@@ -46,7 +46,7 @@ export default function ({ login }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1>Mentorship Network</h1>
+            <h1>Manage.Mentorship</h1>
             <span className="error">{error}</span>
             <br/>
             <input type="text" placeholder="Username" onChange={handleUsername} />
